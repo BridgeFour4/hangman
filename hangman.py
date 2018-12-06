@@ -9,7 +9,7 @@ import time
 #constants
 HANGMAN=(
     """
-   ______
+    ______
     |           |
     |
     |
@@ -17,11 +17,11 @@ HANGMAN=(
     |
     |
     |
- _|______
+  _|______
  """
     ,
 """
-   ______
+    ______
     |           |
     |          O
     |
@@ -29,11 +29,11 @@ HANGMAN=(
     |
     |
     |
- _|______
+  _|______
  """
         ,
 """
- ______
+  ______
   |           |
   |          O
   |          +
@@ -41,15 +41,15 @@ HANGMAN=(
   |
   |
   |
- _______
+_|______
  """
             ,
 """
  ______
   |           |
   |          O
-  |    /- +-
-  | /       +   
+  |       /- +-
+  |     /    +   
   |
   |
   |
@@ -60,8 +60,8 @@ HANGMAN=(
    ______
     |           |
     |          O
-    |    /- +-\\
-    | /       +      \\
+    |       /- +-\\
+    |     /   +    \\
     |
     |
     |
@@ -72,8 +72,8 @@ HANGMAN=(
    ______
     |           |
     |          O
-    |    /- +-\\
-    | /       +      \\
+    |       /- +-\\
+    |     /    +   \\
     |         |
     |         |
     |
@@ -84,10 +84,10 @@ HANGMAN=(
    ______
     |           |
     |          O
-    |    /- +-\\
-    | /       +      \\
-    |        |   |
-    |        |   |
+    |       /- +-\\
+    |     /    +   \\
+    |        |    |
+    |        |    |
     |
  _|______
  """
@@ -117,7 +117,7 @@ HANGMAN=(
  """
     )
 MAX_WRONG=len(HANGMAN)-1
-WORDS=("INDEX","INPUT","VARIABLE","STRING","INTEGER")
+WORDS=("INDEX","INPUT","VARIABLE","STRING","INTEGER","FUNCTION","WHILE","LOOP",'FLOAT','PRINT')
 word=random.choice(WORDS)#the word to be guessed
 soFar="_"*len(word)
 wrong=0
@@ -152,7 +152,6 @@ def game():
             guess = guess.upper()
 
         used.append(guess)
-        print(word)
         if guess in word:
             print("\nYes!",guess,"is in the word!")
             
@@ -167,9 +166,15 @@ def game():
         else:
             print("\nSorry,",guess,"isn't in the word")
             wrong+=1
+        # allows you to guess the word
         guess_word=input("would you like to guess the word y/n")
         if guess_word.lower()=="y":
             value=guessWord(word)
+            if value=="win":
+                soFar=word
+            else:
+                print("ded")
+                wrong=MAX_WRONG
         else:
                 print("continue then")
     if wrong ==MAX_WRONG:
@@ -178,11 +183,13 @@ def game():
         win()
     input("\n\nPress the enter key to exit")
         
-
+#displays the puzzle
 def display():
     print(HANGMAN[wrong])
     print("\nYou've used the following letters so far",used)
     print("\nSo far the word is:\n",soFar)
+    
+#checks that the guess is alphabetical
 def guess_check(message):
     guess=input(message)
     while True:
@@ -191,13 +198,16 @@ def guess_check(message):
         else:
             guess=input(message)
             
-def guessWord(word,MAX_WRONG):
+ #allows you to guess word  after you've guessed a letter           
+def guessWord(word):
     while True:
         word_guess=input("enter the word")
         if word_guess.upper()==word:
-            return win
+            print("you got it correct")
+            return "win"
         else:
-            return MAX_WRONG
+            print("wrong you lose")
+            return "lose"
         
 def win():
     print("\n you guessed it")
@@ -212,7 +222,7 @@ def win():
                     break
                 
 def lose():
-    print(HANG_MAN[wrong])
+    print(HANGMAN[wrong])
     print("you've been hanged")
     print("\nthe word was ",word)
     while True:
